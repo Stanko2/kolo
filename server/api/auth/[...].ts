@@ -2,7 +2,7 @@ import { NuxtAuthHandler } from "#auth";
 //@ts-ignore
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "~/lib/prisma";
-
+import bcrypt from 'bcrypt'
 
 export default NuxtAuthHandler({
   providers: [
@@ -26,14 +26,11 @@ export default NuxtAuthHandler({
         const user = await prisma.user.findFirst({
           where: {
             name: credentials?.username,
-            password: credentials?.password,
-          }
+         }
         })
 
-        if (user) {
-          console.log(user);
-          //@ts-ignore
-          user.test = "test";
+
+        if (user && await compare(credentials.password, user.password)) {
           // Any object returned will be saved in `user` property of the JWT
           return user;
         } else {
@@ -47,3 +44,11 @@ export default NuxtAuthHandler({
   ],
   secret: useRuntimeConfig().secret,
 });
+
+async function compare(password: string, hashedPassword: string): Promise<boolean> {
+  return new Promise(resolve=>{
+    bcrypt.compare(password, hashedPassword, (err, same)=>{
+      resolve(same)
+    })
+  })
+}

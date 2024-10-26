@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "../node_modules/.prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -12,19 +12,94 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  password String @default("password")
-  name  String?
-  admin Boolean @default(false)
-  posts Post[]
+  id              Int           @id @default(autoincrement())
+  email           String        @unique
+  password        String        @default("password")
+  name            String?
+  admin           Boolean       @default(false)
+  organization    Organization?
+  organization_id Int?          @unique
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+model Organization {
+  id                 Int                 @id @default(autoincrement())
+  name               String
+  ICO                String              @unique
+  address            String
+  description        String              @default("")
+  active             Boolean
+  User               User?                @relation(fields: [userId], references: [organization_id])
+  userId             Int?                 @unique
+  emailToken         String              @unique @default(uuid())
+  Order              Order[]
+  watchedProducts    WatchedProduct[]
+  interestedProducts InterestedProduct[]
+}
+
+model Product {
+  id                      Int                 @id @default(autoincrement())
+  name                    String
+  count                   Int
+  weight                  Float
+  Category                Category            @relation(fields: [categoryId], references: [id])
+  categoryId              Int
+  watchedOrganizations    WatchedProduct[]
+  interestedOrganizations InterestedProduct[]
+}
+
+model WatchedProduct {
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+  Product        Product      @relation(fields: [productId], references: [id])
+  productId      Int
+
+  @@id([organizationId, productId])
+}
+
+model InterestedProduct {
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId Int
+  Product        Product      @relation(fields: [productId], references: [id])
+  productId      Int
+
+  @@id([organizationId, productId])
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  products Product[]
+}
+
+// enum OrderState {
+//   done
+//   accepted
+//   sent
+// }
+
+model Order {
+  id             Int            @id @default(autoincrement())
+  organization   Organization   @relation(fields: [organizationId], references: [id])
+  organizationId Int
+  state          String //OrderState
+  date           DateTime
+  pickupPlace    String
+  products       OrderProduct[]
+  Contract       Contract[]
+}
+
+model OrderProduct {
+  id          Int     @id @default(autoincrement())
+  count       Int
+  description String
+  accepted    Boolean
+  Order       Order   @relation(fields: [orderId], references: [id])
+  orderId     Int
+}
+
+model Contract {
+  id      Int    @id @default(autoincrement())
+  link    String
+  order   Order  @relation(fields: [orderId], references: [id])
+  orderId Int
 }
