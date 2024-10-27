@@ -64,26 +64,26 @@ onMounted(()=>{
 
 <template>
   <div>
-    <Fieldset legend="1. Prihlasovacie udaje">
+    <Fieldset legend="1. Login credentials">
       <FloatLabel variant="on">
         <InputText id="name" v-model="userName" />
-        <label for="name">Prihlasovacie meno</label>
+        <label for="name">Username</label>
       </FloatLabel>
       <FloatLabel variant="on">
         <Password id="password" v-model="password" />
-        <label for="password">Heslo</label>
+        <label for="password">Password</label>
       </FloatLabel>
       <FloatLabel variant="on">
         <Password id="passwordCheck" v-model="passCheck" />
-        <label for="passwordCheck">Heslo znova</label>
+        <label for="passwordCheck">Password Again</label>
       </FloatLabel>
     </Fieldset>
 
-    <Fieldset legend="2. Informácie o organizácii">
-      <p class="mb-2">Skontroluj či sedia</p>
+    <Fieldset legend="2. Organization information">
+      <p class="mb-2">Check if they are correct</p>
       <FloatLabel variant="on">
         <InputText id="orgName" label="Meno" v-model="organization.name" />
-        <label for="orgName">Meno organizácie</label>
+        <label for="orgName">Organization name</label>
       </FloatLabel>
       <FloatLabel variant="on">
         <InputText id="ico" v-model="organization.ICO" />
@@ -95,10 +95,10 @@ onMounted(()=>{
       </FloatLabel>
       <FloatLabel variant="on">
         <InputText id="address" fluid v-model="organization.address" />
-        <label for="address">Sídlo</label>
+        <label for="address">Address</label>
       </FloatLabel>
     </Fieldset>
-    <Button label="Pokračovať" fluid @click="register"  />
+    <Button label="Continue" fluid @click="register"  />
   </div>
 </template>
 

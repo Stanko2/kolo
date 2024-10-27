@@ -17,6 +17,7 @@ interface Product {
 const data = ref<Category[]>([])
 const interested = ref<Record<number, boolean>> ({})
 const watchlist = ref<Record<number, boolean>>({})
+const router = useRouter()
 
 onMounted(async() => {
   data.value = await $fetch('/api/product/preferences') as Category[]
@@ -57,6 +58,8 @@ async function submit () {
     method: 'POST',
     body: body
   })
+
+  await router.push('/products')
 }
 
 </script>
@@ -77,9 +80,8 @@ async function submit () {
           </div>
           </AccordionHeader>
         <AccordionContent>
-          <Chip class="cursor-pointer m-2 select-none" :class="{
-            'bg-green-500': interested[product.id] == true,
-            'bg-gray-500': interested[product.id] == false
+          <Chip class="cursor-pointer m-2 select-none bg-gray" :style="{
+            'background-color': interested[product.id] ? 'rgb(34, 197, 94)' : 'rgb(229, 231, 235)'
           }" v-for="product in category.products" :key="product.id">
             <p @click="() => toggle(product)">{{product.name}}</p>
             <i class="pi" :class="{
