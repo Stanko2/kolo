@@ -1,4 +1,4 @@
-import Aura from '@primevue/themes/aura'
+import {Noir} from "./theme";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     autoImport: true,
     options: {
       theme: {
-        preset: Aura
+        preset: Noir
       }
     }
   }

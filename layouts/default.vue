@@ -5,8 +5,8 @@ const auth = useAuth()
 
 const items = ref([
   { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
-  { label: 'About', icon: 'pi pi-fw pi-info', to: '/about' },
-  { label: 'Contact', icon: 'pi pi-fw pi-envelope', to: '/contact' }, 
+  { label: 'Preferences', icon: 'pi pi-fw pi-info', to: '/preferences' },
+  { label: 'Products', icon: 'pi pi-fw pi-envelope', to: '/products' },
 ])
 
 onMounted(() => {
@@ -36,14 +36,18 @@ const search = ref('')
 
 <template>
   <div class="p-0">
-    <Menubar :model="items" >
-      <template #end class="flex">
+<!--     style="background: #fcb731" -->
+    <Menubar :model="items">
+      <template #start>
+        <img class="h-8 rounded-md" src="/logo.png"/>
+      </template>
+      <template #end>
         <div class="flex items-center">
-            <IconField>
-                <InputIcon class="pi pi-search" />
-                <InputText v-model="search" placeholder="Search" />
-            </IconField>
-            <i class="pi pi-shopping-cart p-2 text-xl"></i>
+<!--            <IconField>-->
+<!--                <InputIcon class="pi pi-search" />-->
+<!--                <InputText v-model="search" placeholder="Search" />-->
+<!--            </IconField>-->
+            <i class="pi pi-shopping-cart p-2 text-xl" @click="router.push('/cart')"></i>
         </div>
       </template>
     </Menubar>

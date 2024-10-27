@@ -9,10 +9,11 @@ export default defineEventHandler(async (event)=> {
         return
     }
 
+    console.log(session)
+
     const user = (await prisma.user.findFirst({
         where: {
             name: session.user!.name,
-            email: session.user!.email ?? undefined,
         },
         select: {
             admin: true,

@@ -27,10 +27,12 @@ model Organization {
   ICO                String              @unique
   address            String
   description        String              @default("")
-  active             Boolean
-  User               User?                @relation(fields: [userId], references: [organization_id])
-  userId             Int?                 @unique
+  active             Boolean             @default(true)
+  invited            Boolean             @default(false)
+  User               User?               @relation(fields: [userId], references: [organization_id])
+  userId             Int?                @unique
   emailToken         String              @unique @default(uuid())
+  email              String              @default("")
   Order              Order[]
   watchedProducts    WatchedProduct[]
   interestedProducts InterestedProduct[]
@@ -39,12 +41,14 @@ model Organization {
 model Product {
   id                      Int                 @id @default(autoincrement())
   name                    String
+  description             String              @default("")
   count                   Int
   weight                  Float
   Category                Category            @relation(fields: [categoryId], references: [id])
   categoryId              Int
   watchedOrganizations    WatchedProduct[]
   interestedOrganizations InterestedProduct[]
+  orders                  OrderProduct[]
 }
 
 model WatchedProduct {
@@ -85,11 +89,14 @@ model Order {
   date           DateTime
   pickupPlace    String
   products       OrderProduct[]
-  Contract       Contract[]
+  Contract       Contract?
+  Contract_id    Int?            @unique
 }
 
 model OrderProduct {
   id          Int     @id @default(autoincrement())
+  product     Product @relation(fields: [productId], references:   [id])
+  productId   Int
   count       Int
   description String
   accepted    Boolean
@@ -100,6 +107,6 @@ model OrderProduct {
 model Contract {
   id      Int    @id @default(autoincrement())
   link    String
-  order   Order  @relation(fields: [orderId], references: [id])
-  orderId Int
+  order   Order  @relation(fields: [orderId], references: [Contract_id])
+  orderId Int    @unique
 }

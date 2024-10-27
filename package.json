@@ -16,6 +16,7 @@
     "@prisma/nuxt": "^0.0.35",
     "@sidebase/nuxt-auth": "^0.9.4",
     "bcrypt": "^5.1.1",
+    "nodemailer": "^6.9.15",
     "nuxt": "^3.13.2",
     "primeicons": "^7.0.0",
     "vue": "latest",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@prisma/client": "^5.21.1",
-    "@types/bcrypt": "^5.0.2"
+    "@types/bcrypt": "^5.0.2",
+    "@types/nodemailer": "^6.4.16"
   }
 }

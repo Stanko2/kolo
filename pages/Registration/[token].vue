@@ -1,11 +1,16 @@
 <script setup lang="ts">
+definePageMeta({
+  auth: false
+})
 
 import {useFetch} from "#app";
 import {$fetch} from "ofetch";
 
 const route = useRoute()
+const router = useRouter()
 
 interface OrganizationData {
+  id: number
   name: string
   email: string
   ICO: string
@@ -13,9 +18,10 @@ interface OrganizationData {
 }
 
 const organization = ref<OrganizationData>({
+  id: -1,
   name: "",
   email: "",
-  ico: "",
+  ICO: "",
   address: "",
 })
 
@@ -29,7 +35,7 @@ async function register() {
   if (password.value != passCheck.value){
     return
   }
-  await $fetch("/api/organization/register", {
+  const org = await $fetch("/api/organization/register", {
     method: "POST",
     body: {
       token: route.params.token,
@@ -38,16 +44,17 @@ async function register() {
       password: password.value,
     }
   })
-  await $fetch("/api/auth/signin", {
-    method: "POST",
-    body: {
-      username: userName.value,
-      password: password.value,
-    }
-  })
+  const a = await auth.signIn(undefined)
+  console.log(a)
+  await router.push('/preferences')
 }
 
 onMounted(()=>{
+  console.log(auth.status.value)
+  if(auth.status.value == 'authenticated') {
+    router.push('/preferences')
+  }
+
   $fetch(`/api/organization/${route.params.token}`).then(res => {
     organization.value = res
   })
@@ -59,7 +66,7 @@ onMounted(()=>{
   <div>
     <Fieldset legend="1. Prihlasovacie udaje">
       <FloatLabel variant="on">
-        <InputText id="name" />
+        <InputText id="name" v-model="userName" />
         <label for="name">Prihlasovacie meno</label>
       </FloatLabel>
       <FloatLabel variant="on">

@@ -3,10 +3,11 @@
 const router = useRouter()
 
 const items = ref([
-  { label: 'Home', icon: 'pi pi-fw pi-home', to: '/' },
-  { label: 'About', icon: 'pi pi-fw pi-info', to: '/about' },
-  { label: 'Contact', icon: 'pi pi-fw pi-envelope', to: '/contact' }, 
-    { label: 'Admin', icon: 'pi pi-fw pi-cog', to: '/admin' }
+  { label: 'Home', icon: 'pi pi-fw pi-home', to: '/admin' },
+  { label: 'Orders', icon: 'pi pi-fw pi-info', to: '/admin/about' },
+  { label: 'Map', icon: 'pi pi-fw pi-envelope', to: '/admin/map' },
+  { label: 'Warehouse', icon: 'pi pi-fw pi-cog', to: '/admin' },
+  { label: 'Organizations', icon: 'pi pi-fw pi-envelope', to: '/admin/organizations' },
 ])
 
 onMounted(() => {
